@@ -1,4 +1,18 @@
 <?php
+/*
+    function: rotate_n
+    parameters:
+        string input - input string to be encoded
+        int offset - offset for letters, default 13
+        int add - addition for digits, default 5
+    return: encoded string
+    description:
+        rotate letters by offset, digits by addition
+        e.g. offset = 2, add = 3
+        a -> c, z -> b
+        A -> C, Z -> B
+        0 -> 3, 7 -> 0, 9 -> 2
+*/
 function rotate_n(string $input, int $offset = 13, int $add = 5): string
 {
     $res = "";
@@ -20,8 +34,21 @@ function rotate_n(string $input, int $offset = 13, int $add = 5): string
     return $res;
 }
 
+
+/*
+    function: table_caesar
+    parameters:
+        string input - input string to be encoded
+    return: encoded string
+    description:
+        encode letters by a fixed table
+        e.g. a -> b, z -> a
+             A -> B, Z -> A
+             other characters remain unchanged
+*/
 function table_caesar(string $input): string
 {
+    // some type of simple, naive cipher table; offset = 1.
     $table = array(
         'a' => 'b',
         'b' => 'c',
@@ -84,17 +111,37 @@ function table_caesar(string $input): string
     return $input;
 }
 
+/*
+    main function
+    parameters:
+        array argv - command line arguments
+    commandline arguments (all required):
+        task_number - 1 or 2
+        in file - input file path
+        out file - output file path
+    return: void
+    description:
+        parse command line arguments
+        call corresponding function
+        write result to output file
+*/
 function main(array $argv): void
 {
     $argc = count($argv);
+
+    // check number of commandline args
     if ($argc != 4)
     {
         echo "Usage: php xm1.php <task_number> <in file> <out file>\n";
         return;
     }
+
+    // read in commandline params
     $in_file = $argv[2];
     $out_file = $argv[3];
     $task_type = $argv[1];
+
+    // avoid crash because of an invalid i file
     if (!file_exists($in_file))
     {
         echo "Input file $in_file does not exist\n";
@@ -102,6 +149,7 @@ function main(array $argv): void
     }
     $content = file_get_contents($argv[2]);
 
+    // task type branches
     if ($task_type == "1")
         $res = rotate_n($content);
     else if ($task_type == "2")
@@ -112,6 +160,7 @@ function main(array $argv): void
         return;
     }
 
+    // write to o file
     file_put_contents($out_file, $res);
     return;
 }
