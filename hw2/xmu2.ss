@@ -1,11 +1,11 @@
 (define fib (lambda (n)
 	(cond
-    ((not (number? n)) "Input must be a number")
+    ((or (not (number? n)) (<= n 0)) "Input must be a number > 0")
 	((<= n 2) 1)
 	(else  (+ (fib (- n 1)) (fib (- n 2))))
 	)))
 
-; (display (fib 5)) ; output 5
+ ; (display (fib 20)) ; output 6765
 
 
 (define rac (lambda (arr)
